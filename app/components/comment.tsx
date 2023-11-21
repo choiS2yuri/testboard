@@ -59,7 +59,7 @@ export default function Comment(props : CommentProps){
     
     const [totalComment, setTotalComment] = useState<CommentType[]>()
     const params = useParams();
-    console.log(params)
+    // console.log(params)
 
     
     useEffect(()=>{
@@ -99,7 +99,9 @@ export default function Comment(props : CommentProps){
         <>
             {
                 session && session.user && <>
-                    <p>댓글 목록</p>
+                <div className="max-w-7xl mx-auto">
+                    <p className="bold ">댓글 목록</p>
+                </div>
                     {
                         totalComment && totalComment.map((e,i)=>{
                             const date = new Date(e.date);

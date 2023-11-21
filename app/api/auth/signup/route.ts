@@ -7,6 +7,7 @@ interface formType{
     email : string;
     password: string;
     name: string;
+    nickname: string;
 }
 
 
@@ -14,9 +15,9 @@ export const POST = async (
     req: NextRequest
 ) : Promise<NextResponse> =>{
     if(req.method === 'POST'){
-        const{email, password, name}: formType = JSON.parse(await req.text());
+        const{email, password, name, nickname}: formType = JSON.parse(await req.text());
         //텍스트로 받은것을 json파일로 파씽하는거
-        if(!email || !password || !name){
+        if(!email || !password || !name || !nickname){
             return NextResponse.json({message: "데이터가 부족함다"})
         }
         const hash = await bcrypt.hash(password, 10);
@@ -28,11 +29,12 @@ export const POST = async (
         if(memberCnt > 0){
             return NextResponse.json({message: "해당 이메일이 존재합니다"})
         }else{
-            await db.query('insert into choiyul.member (email, password, name) values(?,?,?)', [email, hash, name]);
+            await db.query('insert into choiyul.member (email, password, name, nickname) values(?,?,?,?)', [email, hash, name, nickname]);
             const data = {
                 email : email,
                 password : password
             }
+            //로그인할때는 이메일가 비밀번호가 있어야하니까
             return NextResponse.json({message: "성공", data: data})
         }
     }else{

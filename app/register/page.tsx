@@ -8,13 +8,15 @@ interface formType{
     email : string;
     password: string;
     name: string;
+    nickname: string;
 }
 
 export default function Register(){
     const [formData, setFormData] = useState<formType>({
         email: '',
         password: '',
-        name : ''
+        name : '',
+        nickname: '',
     })
     const [message, setMessage] = useState<string>("");
     const changeEvent = (e: React.ChangeEvent<HTMLInputElement>)=>{
@@ -68,6 +70,10 @@ export default function Register(){
             <div className="flex mx-auto">
                 <p className='basis-1/7 mx-auto'>이름</p>    
                 <input onChange={changeEvent} type="text" placeholder="이름" name="name" required className='border block w-[80%] mx-auto shadow text-gray-700 text-sm mb-2 basis-4/6' />
+            </div>
+            <div className="flex mx-auto">
+                <p className='basis-1/7 mx-auto'>닉네임</p>    
+                <input onChange={changeEvent} type="text" placeholder="닉네임" name="nickname" required className='border block w-[80%] mx-auto shadow text-gray-700 text-sm mb-2 basis-4/6' />
             </div>
             <div className="text-center">
                 <button type="submit" className="bg-pink-400 border text-white font-bold px-16 py-4 rounded-md">가입</button>
