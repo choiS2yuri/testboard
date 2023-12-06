@@ -14,7 +14,7 @@ interface memberInfo{
 
 
 async function getData() {
-    const res = await fetch('http://localhost:3000/api/admin',{
+    const res = await fetch('https://testboard-beige.vercel.app/api/admin',{
         cache : 'no-cache',
         method: 'POST',
         headers: {

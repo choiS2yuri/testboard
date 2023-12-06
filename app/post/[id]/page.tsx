@@ -29,7 +29,7 @@ interface propsType{
 }
 
 async function Getip() {
-  const res = await fetch('http://localhost:3000/api/get-ip');
+  const res = await fetch('https://testboard-beige.vercel.app/api/get-ip');
   const data = res.json();
   if(!res.ok){
     alert('에라가발생하였습니다');
