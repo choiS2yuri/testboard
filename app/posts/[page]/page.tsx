@@ -50,7 +50,7 @@ export default async function PostsList({
   return (
     <>
     <div className="mx-auto max-w-7xl p-6">
-      <h1 className="text-center text-2xl font-semibold">게시판</h1>
+      <h1 className="text-center text-2xl font-semibold">자유게시판📔</h1>
     </div>
     <div className='max-w-7xl mx-auto flex justify-end'>
         <Search />
@@ -74,7 +74,7 @@ export default async function PostsList({
           const number = totalCnt - ((currentPage - 1) *perPage + i)
         return(
           <ul key={i} className='flex justify-between border mb-1'>
-            <li className='my-2 mx-2 px-1 py-1  basis-1/15 text-center'>{number}</li>
+            <li className='my-2 mx-2 px-1 py-1  basis-2/15 text-center'>{number}</li>
             <li className='my-2 mx-2 basis-8/15 text-center'><Link href={`/post/${e.id}`}>{e.title}</Link></li>
             <li className='my-2  mx-2 basis-2/15 text-center'>{e.username}</li>
             <li className='my-2  mx-2 basis-3/15 text-center'>{fotmatDate}</li>

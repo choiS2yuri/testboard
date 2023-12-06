@@ -1,32 +1,33 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import ChartCom from './chart';
+import MemberChart from '../components/admin/chart/memberchart';
+import OsCom from '../components/admin/chart/oschart';
+import PlatformCom from '../components/admin/chart/platformchart';
+import VisitChart from '../components/admin/chart/visitchart';
+import NewMember from '../components/admin/chart/newmember';
+import NewPost from '../components/admin/chart/newpost';
+import Totalcnt from '../components/admin/chart/totalcnt';
 
 
-interface userInfo {
-    user:{
-      name?: string;
-      email?: string;
-      image?: string;
-      level?: number;
-    }
-  }
+
+
+
 
 
 export default async function Admin(){
-
-    let sessions = await getServerSession(authOptions) as userInfo;
-    if(!sessions && sessions || sessions?.user.level !== 10){
-        // 관리자가 아닐때만 못들어오도록
-        return(
-            <p>관리자만 접속 가능한 페이지입니다.</p> 
-        )
-    }
-    return(
-        // 관리자일때 동작
-        <>
-            <p>관리자 전용</p> 
-            <ChartCom />
-        </>
-    )
+  return(
+    <>
+     <Totalcnt/>   
+     <div className="w-full my-5 flex flex-wrap justify-between">
+        <NewMember/>
+        <NewPost/>
+     </div>
+     <div className="w-full my-5 flex flex-wrap justify-between">
+      <MemberChart/>
+      <VisitChart/>
+     </div>
+     <div className="w-full my-5 flex flex-wrap justify-between">
+      <OsCom/>
+      <PlatformCom/>
+     </div>
+    </>
+  )
 }

@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import AuthSession from './session';
 import Nav from './components/nav';
+import Visit from './components/etc/visit';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,6 +32,7 @@ export default async function RootLayout({
           <p className='flex justify-end text-gray-400'>{session && session.user?.email? "로그아웃" : '로그인'}</p>
         </div> */}
         <AuthSession>
+          <Visit />
           <Nav />
           {children}
         </AuthSession>

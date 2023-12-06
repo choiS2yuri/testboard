@@ -32,14 +32,25 @@ export default async function Nav(){
                 </div>
             </>
             :
-            <>
-            <div className="max-w-7xl mx-auto flex justify-start"> 
-              <Link href="/register">회원가입</Link>
+            <div className='max-w-7xl mx-auto flex justify-end'>
+                <div className='basis-1/12'> 
+                    <Link href="/register" className='hover:font-bold'>회원가입</Link>
+                </div>
+                <div className='basis-1/12'> 
+                    <Login />
+                </div> 
             </div>
-            <div className="max-w-7xl mx-auto flex justify-start"> 
-                <Login />
-            </div> 
+        }
+        {
+            session && session?.user.level === 10 
+            ?
+            <>
+                <div className="w-full flex justify-start">
+                    <Link href='/admin'>관리자페이지</Link>
+                </div>
             </>
+            :
+            ""
         }
         </>
     )

@@ -32,15 +32,18 @@ interface CommentType{
     username: string;
     content: string;
     date: string;
+
 }
 
 export default function Comment(props : CommentProps){
     const {id} = props;
+    const [totalComment, setTotalComment] = useState<CommentType[]>()
     const commentValue = (e: React.ChangeEvent<HTMLInputElement>)=>{
         // setComment(e.target.value)
         setFormData({...formData, [e.target.name]: e.target.value});
         // console.log(formData)
     }
+    const params = useParams();
     const {data: session} = useCustomSession();
     const [formData, setFormData]= useState<formType>({
         parentid: id,
@@ -57,22 +60,24 @@ export default function Comment(props : CommentProps){
         })
     },[session?.user.name, session?.user.email, id])
     
-    const [totalComment, setTotalComment] = useState<CommentType[]>()
-    const params = useParams();
-    // console.log(params)
 
     
     useEffect(()=>{
         const fetchData = async ()=>{
-            const res = await fetch(`/api/comment?id=${params.id}`)
-            const data = await res.json();
-            console.log(data)
-            // const sortedComments = data.result?.sort((a, b) => {
-            //     const dateA = new Date(a.date).getTime();
-            //     const dateB = new Date(b.date).getTime();
-            //     return dateB - dateA;
-            // });
-            setTotalComment(data.results);
+            try{
+                const res = await fetch(`/api/comment?id=${params.id}`)
+                const data = await res.json();
+                console.log(data)
+                if(data.result){
+                    const sortedComments = (data.result as CommentType[]).sort((a, b) => {
+                        const dateA = new Date(a.date).getTime();
+                        const dateB = new Date(b.date).getTime();
+                        return dateB - dateA; });
+                    setTotalComment(sortedComments);
+                }
+            }catch(error){
+                console.log(error)
+            }
         }
         fetchData()
     },[params.id])
@@ -99,8 +104,8 @@ export default function Comment(props : CommentProps){
         <>
             {
                 session && session.user && <>
-                <div className="max-w-7xl mx-auto">
-                    <p className="bold ">댓글 목록</p>
+                <div className="max-w-7xl mx-auto bg-pink-400 my-8">
+                    <p className="flex justify-start bold text-white">&nbsp;⌨&nbsp;댓글 목록</p>
                 </div>
                     {
                         totalComment && totalComment.map((e,i)=>{
@@ -114,15 +119,26 @@ export default function Comment(props : CommentProps){
                                 const seconds = date.getSeconds().toString().padStart(2,'0')
                                 const fotmatDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
                             return(
-                                <div key={i} className="flex justify-between basis-1/2">
-                                    <p>{e.content}</p>
-                                    <p>{fotmatDate}</p>
+                                <div key={i} className="max-w-5xl mx-auto">
+                                    <div className="flex basis-full justify-between border-b-2">
+                                        💬
+                                        <div className="flex justify-start basis-1/7">
+                                            <p className="basis-1/2">{e.userid}</p>
+                                            <p className="basis-1/2">({e.username})</p>
+                                        </div>
+                                        <div className="flex justify-start w-1/2">
+                                            <p className="w-full text-left">{e.content}</p>
+                                        </div>
+                                        <p className="basis-2/7">{fotmatDate}</p>
+                                    </div>
                                 </div>
                             )
                         })
                     }
-                    <input onChange={commentValue} name="content" type="text" className="border p-2 border-orange-500 rounded"/>
-                    <button onClick={()=>{cmtSubmit()}}>댓글 등록</button>
+                    <div className="max-w-7xl mx-auto flex justify-center my-5">
+                        <input onChange={commentValue} name="content" type="text" className="border p-2 border-pink-500 rounded w-2/3"/>
+                        <button onClick={()=>{cmtSubmit()}} className="rounded-lg border ml-2 p-2 shadow-sm">댓글 등록</button>
+                    </div>
                 </>
             }
         </>

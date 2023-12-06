@@ -3,7 +3,6 @@ import { RowDataPacket } from 'mysql2';
 import Link from "next/link"
 import getServerSession from 'next-auth'
 import Comment from '@/app/components/comment';
-import { AuthOptions } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import EditDelete from './editDelete';
 
@@ -46,7 +45,7 @@ export default async function Detail({
   params ?: {id ?: number}
 }){
   const getIp = await Getip();
-  const userIp = getIp.data
+  const userIp = getIp.data.ip
   // console.log(userIp)
   const postId = params?.id !== undefined ? params.id : 1;
   const [results] = await db.query<RowDataPacket[]>('select * from choiyul.board where id = ?', [postId]);
@@ -72,25 +71,30 @@ export default async function Detail({
   }
     return(
         <>
-          <div className='max-w-7xl mx-auto border mt-7'>
+          <div className='max-w-7xl mx-auto border mt-7 '>
             {
               results.length > 0 && (
                 <>
                 <div className="text-center">
-                  <div className="flex justify-between">
-                    <span className="basis-4/5">제목 : {post?.title}</span>
-                    <span className="basis-1/7">작성자 : {post?.username}</span>
+                  <div className="flex justify-between  my-2 mx-2">
+                    <span className="basis-4/5 text-left pl-2">제목 : {post?.title}</span>
+                    <span className="basis-1/7 border-r-2 ">작성자 : {post?.username}&nbsp;&nbsp;</span>
                     <span className="basis-1/7">조회수 : {post?.count}</span>
                   </div>
-                  <p className="text-center border h-[50%]">내용 : {post?.content}</p>
-                  <div className="flex justify-end">
+                  <div className="flex justify-start border h-52 pl-2">내용 : {post?.content}
+                  </div>
+                  <div className="flex justify-end mx-2">
                     <p>날짜 : {fotmatDate}</p>
                   </div>
-                  {
-                    session ? <Comment id={post?.id}/> : <p className="block border p-4 text-center my-5 rounded-md"> <Link href="/login">로그인 이후 댓글을 작성할 수 있습니다.</Link></p>
-                  }
-                  <EditDelete results={post as propsType['results']} />
+                  <div className="mx-2 my-2">
+                    <EditDelete results={post as propsType['results']} />
+                  </div>
                 </div>
+                  {
+                    session ? <Comment id={post?.id}/> : 
+                    <p className="block border p-4 text-center my-5 rounded-md w-96"> <Link href="/login">로그인 이후 댓글을 작성할 수 있습니다.</Link></p>
+                  }
+                  
                 </>
               )
             }
